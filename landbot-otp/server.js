@@ -56,6 +56,7 @@ app.post('/send-otp', async (req, res) => {
     return res.json({ status: v.status });
   } catch (err) {
     console.error('send-otp error:', err.code, err.message);
+    if (err.status === 429 || err.code === 20429) return res.status(429).json({ status: 'rate_limited' });
     return res.status(500).json({ status: 'send_failed' });
   }
 });
